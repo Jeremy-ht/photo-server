@@ -10,6 +10,7 @@ const orderRouter = require('./router/orderRouter');
 const collectRouter = require('./router/collectRouter');
 const addressRouter = require('./router/addressRouter');
 const photoRouter = require('./router/photoRouter');
+const adminRouter = require('./router/adminRouter');
 
 Routers.use(userRouter.routes());
 Routers.use(resourcesRouter.routes());
@@ -20,5 +21,6 @@ Routers.use(collectRouter.routes());
 
 Routers.use(addressRouter.routes());
 Routers.use(photoRouter.routes());
+Routers.use(adminRouter.routes());
 
 module.exports = Routers;

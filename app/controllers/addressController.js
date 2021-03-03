@@ -33,7 +33,7 @@ module.exports = {
 
     ctx.body = {
       success: false,
-      code: '500',
+      data: '',
       msg: '添加失败'
     }
 
@@ -46,7 +46,6 @@ module.exports = {
     let address = await addressDao.getAddressList(userid)
     ctx.body = {
       success: true,
-      code: '001',
       data: address,
       msg: '成功'
     }

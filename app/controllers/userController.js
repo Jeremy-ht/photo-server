@@ -297,10 +297,18 @@ module.exports = {
   },
   // 3、获取所有用户
   GetUsers: async ctx => {
-    let user = await userDao.GetUsers();
+    let {pagenum, pagesize} = ctx.request.body;
+    let count = await userDao.Getcount();
+    pagenum1 = (pagenum - 1) * pagesize
+    pagesize1 = pagenum * pagesize
+    let user = await userDao.GetUsers(pagenum1, pagesize1);
     ctx.body = {
-      code: '001',
-      user
+      success: true,
+      data: {
+        pageTotal: count[0].count,
+        data: user
+      },
+      msg: '成功'
     }
 
   },

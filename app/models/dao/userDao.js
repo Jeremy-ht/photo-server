@@ -8,18 +8,18 @@
 const db = require('./db.js');
 
 module.exports = {
-  // 连接数据库根据用户名和密码查询用户信息
+
   Login: async (uname, pwd) => {
     console.log(uname, pwd)
     const sql = 'select * from user where uname = ? and pwd = ?';
     return await db.query(sql, [uname, pwd]);
   },
-  // 连接数据库根据用户名查询用户信息
+
   FindUserName: async (userName) => {
     const sql = 'select * from users where userName = ?';
     return await db.query(sql, [userName]);
   },
-  // 连接数据库插入用户信息
+
   Register: async (id, userName, password, phone) => {
     let str = new Date(parseInt(new Date().getTime())).toLocaleString().replace(/:\d{1,2}$/, ' ')
     const sql = `insert into user values(?,?,?,1,1,
@@ -29,10 +29,15 @@ module.exports = {
   },
 
   // 3、获取所有用户
-  GetUsers: async () => {
-    const sql = 'select * from users';
+  GetUsers: async (pagenum, pagesize) => {
+    const sql = 'select * from user order by id desc limit ' + pagenum + "," + pagesize + ";";
     return await db.query(sql, []);
   },
+  Getcount: async () => {
+    const sql = `SELECT count(1) count from user;`;
+    return await db.query(sql, []);
+  },
+
   getMaxId: async () => {
     const sql = `SELECT  max(id) id  FROM  user;`;
     return await db.query(sql, []);

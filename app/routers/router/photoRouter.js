@@ -1,10 +1,4 @@
-/*
- * @Description: 用户模块路由
- * @Author: hai-27
- * @Date: 2020-02-07 16:51:56
- * @LastEditors: hai-27
- * @LastEditTime: 2020-03-27 12:41:14
- */
+
 const Router = require('koa-router');
 const photoController = require('../../controllers/photoController')
 
@@ -18,5 +12,12 @@ photoRouter
     .post('/photo/addPhoto', photoController.addPhoto)
     .post('/photo/getPhotoList', photoController.getPhotoList)
     .post('/photo/getPhotoById', photoController.getPhotoById)
+    .post('/photo/delPhoto', photoController.delPhotoById)
+
+    .post('/category/getCategoryList', photoController.getCategoryList)
+    .post('/category/delCategory', photoController.delCategory)
+    .post('/category/addCategory', photoController.addCategory)
+
+    .post('/user/getSearchList', photoController.getSearchList)
 
 module.exports = photoRouter;

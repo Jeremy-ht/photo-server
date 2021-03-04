@@ -8,23 +8,62 @@
 const db = require('./db.js');
 
 module.exports = {
-  // 连接数据库获取所有的订单id
-  GetOrderGroup: async (user_id) => {
-    let sql = 'select order_id from orders where user_id = ? group by order_id desc';
-    return await db.query(sql, user_id);
-  },
-  // 连接数据库获取所有的订单详细信息
-  GetOrder: async (user_id) => {
-    let sql = 'select * from orders where user_id =? order by order_time desc';
-    return await db.query(sql, user_id);
-  },
-  // 连接数据库插入订单信息
-  AddOrder: async (length, data) => {
-    let sql = 'insert into orders values(null,?,?,?,?,?,?)';
-    for (let i = 0; i < length - 1; i++) {
-      sql += ",(null,?,?,?,?,?,?)"
-    }
 
-    return await db.query(sql, data);
-  }
+    AddOrder: async (userid, photoid, addressid, price, note, phototime, orderid) => {
+
+        // ======= 当前时间 start =======
+        let d = new Date();
+        let creatime = d.getFullYear().toString() + '-' +
+            (d.getMonth() + 1) + '-' +
+            d.getDate() + ' ' +
+            d.getHours() + ':' +
+            d.getMinutes() + ':' +
+            d.getSeconds();
+        // ======= 当前时间 end =======
+
+        let sql = `insert into orders(userid, photoid, addressid, price, note, phototime, orderid, type, creatime) 
+                values(?,?,?,?,?,?,?,1,?)`;
+
+        return await db.query(sql, [userid, photoid, addressid, price, note, phototime, orderid, creatime]);
+    },
+
+
+    GetOrder: async (userid) => {
+        let sql = `
+        select 
+             o.*,
+             p.name name,
+             c.categoryname categoryname
+        from orders o
+        LEFT JOIN photo p on p.id = o.photoid
+        LEFT JOIN category c on c.id = o.addressid
+        where userid = ? order by o.id desc;
+        `;
+        return await db.query(sql, [userid]);
+    },
+
+    GetOrderList: async (pagenum, pagesize) => {
+        const sql = `
+         select 
+             o.*,
+             p.name name,
+             c.categoryname categoryname
+        from orders o
+        LEFT JOIN photo p on p.id = o.photoid
+        LEFT JOIN category c on c.id = o.addressid
+        order by o.id desc limit ?,?`;
+
+        return await db.query(sql, [pagenum, pagesize]);
+    },
+
+
+    Getcount: async () => {
+        const sql = `select count(1) count from orders;`;
+        return await db.query(sql, []);
+    },
+
+    GetOrderCount: async (userid) => {
+        let sql = 'select count(1) count from orders where userid = ?;';
+        return await db.query(sql, [userid]);
+    },
 }

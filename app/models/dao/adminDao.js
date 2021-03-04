@@ -29,7 +29,7 @@ module.exports = {
 
     GetAdminList: async (pagenum, pagesize) => {
         const sql = 'select * from admin order by id desc limit ' + pagenum + "," + pagesize + ";";
-        return await db.query(sql, []);
+        return await db.query(sql, [pagenum, pagesize]);
     },
 
 

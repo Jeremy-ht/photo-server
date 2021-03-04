@@ -11,116 +11,79 @@ const productDao = require('../models/dao/productDao');
 const checkLogin = require('../middleware/checkLogin');
 
 module.exports = {
-  /**
-   * 获取用户的所有订单信息
-   * @param {Object} ctx
-   */
-  GetOrder: async ctx => {
-    let { user_id } = ctx.request.body;
-    // 校验用户是否登录
-    if (!checkLogin(ctx, user_id)) {
-      return;
-    }
-    // 获取所有的订单id
-    const ordersGroup = await orderDao.GetOrderGroup(user_id);
 
-    // 该用户没有订单,直接返回信息
-    if (ordersGroup.length == 0) {
-      ctx.body = {
-        code: '002',
-        msg: '该用户没有订单信息'
-      }
-      return;
-    }
+    // 提交订单
+    AddOrder: async (ctx) => {
+        let {userid, photoid, addressid, price, note, phototime} = ctx.request.body;
 
-    // 获取所有的订单详细信息
-    const orders = await orderDao.GetOrder(user_id);
+        const timeTemp = new Date().getTime();
+        const orderid = userid + timeTemp;
 
-    let ordersList = [];
-    // 生成每个订单的详细信息列表
-    for (let i = 0; i < ordersGroup.length; i++) {
-      const orderID = ordersGroup[i];
-      let tempOrder = [];
+        try {
 
-      for (let j = 0; j < orders.length; j++) {
-        const order = orders[j];
+            const result = await orderDao.AddOrder(userid, photoid, addressid, price, note, phototime, orderid);
 
-        if (orderID.order_id == order.order_id) {
-          // 获取每个商品详细信息
-          const product = await productDao.GetProductById(order.product_id);
-          order.product_name = product[0].product_name;
-          order.product_picture = product[0].product_picture;
+            // 插入成功
+            if (result.affectedRows == 1) {
+                ctx.body = {
+                    success: true, data: '', msg: '提交成功'
+                }
+                return;
+            }
 
-          tempOrder.push(order);
+            // 否则失败
+            ctx.body = {
+                success: false, data: '', msg: '订单提交失败，请刷新再试！'
+            }
+
+        } catch (error) {
+            reject(error);
         }
-      }
-      ordersList.push(tempOrder);
-    }
+    },
 
-    ctx.body = {
-      code: '001',
-      orders: ordersList
-    }
 
-  },
-  /**
-   * 添加用户订单信息
-   * @param {Object} ctx
-   */
-  AddOrder: async (ctx) => {
-    let { user_id, products } = ctx.request.body;
-    // 校验用户是否登录
-    if (!checkLogin(ctx, user_id)) {
-      return;
-    }
+    // 根据userid查询订单
+    GetOrder: async ctx => {
+        let {userid} = ctx.request.body;
 
-    // 获取当前时间戳
-    const timeTemp = new Date().getTime();
-    // 生成订单id：用户id+时间戳(string)
-    const orderID = +("" + user_id + timeTemp);
+        const count = await orderDao.GetOrderCount(userid);
 
-    let data = [];
-    // 根据数据库表结构生成字段信息
-    for (let i = 0; i < products.length; i++) {
-      const temp = products[i];
-      let product = [orderID, user_id, temp.productID, temp.num, temp.price, timeTemp];
-      data.push(...product);
-    }
-
-    try {
-      // 把订单信息插入数据库
-      const result = await orderDao.AddOrder(products.length, data);
-
-      // 插入成功
-      if (result.affectedRows == products.length) {
-        //删除购物车
-        let rows = 0;
-        for (let i = 0; i < products.length; i++) {
-          const temp = products[i];
-          const res = await shoppingCartDao.DeleteShoppingCart(user_id, temp.productID);
-          rows += res.affectedRows;
-        }
-        //判断删除购物车是否成功
-        if (rows != products.length) {
-          ctx.body = {
-            code: '002',
-            msg: '购买成功,但购物车没有更新成功'
-          }
-          return;
-        }
+        const orders = await orderDao.GetOrder(userid);
 
         ctx.body = {
-          code: '001',
-          msg: '购买成功'
+            success: true,
+            data: {
+                pageTotal: count[0].count,
+                data: orders
+            },
+            msg: '成功'
         }
-      } else {
+
+    },
+
+
+    // 查询所有订单
+    GetOrderList: async ctx => {
+
+        let {pagenum, pagesize} = ctx.request.body;
+        let count = await orderDao.Getcount();
+        pagenum1 = (pagenum - 1) * pagesize
+        pagesize1 = pagenum * pagesize
+
+
+        const orders = await orderDao.GetOrderList();
+
         ctx.body = {
-          code: '004',
-          msg: '购买失败,未知原因'
+            success: true,
+            data: {
+                pageTotal: count[0].count,
+                data: orders
+            },
+            msg: '成功'
         }
-      }
-    } catch (error) {
-      reject(error);
-    }
-  }
+
+    },
+
+
+
 }

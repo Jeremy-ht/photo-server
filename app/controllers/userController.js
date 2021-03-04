@@ -202,6 +202,7 @@ module.exports = {
       // 操作所影响的记录行数为1,则代表注册成功
       if (registerResult.affectedRows === 1) {
         ctx.body = {
+          success: true,
           code: '001',
           msg: '注册成功'
         }
@@ -209,7 +210,8 @@ module.exports = {
       }
       // 否则失败
       ctx.body = {
-        code: '500',
+        success: false,
+        data: '',
         msg: '未知错误，注册失败'
       }
     } catch (error) {
@@ -228,7 +230,7 @@ module.exports = {
     if (user.length === 0) {
       ctx.body = {
         success: false,
-        code: '004',
+        data: '',
         msg: '用户名或密码错误'
       }
       return;
@@ -261,16 +263,6 @@ module.exports = {
   Register2: async ctx => {
     let {uname, pwd, phone} = ctx.request.body;
 
-    // let user = await userDao.FindUserName(userName);
-    //
-    // if (user.length !== 0) {
-    //   ctx.body = {
-    //     code: '004',
-    //     msg: '用户名已经存在，不能注册'
-    //   }
-    //   return;
-    // }
-
     let uid = await userDao.getMaxId()
     uid = uid[0].id + 1
     try {
@@ -280,7 +272,7 @@ module.exports = {
       if (registerResult.affectedRows === 1) {
         ctx.body = {
           success: true,
-          code: '001',
+          data: '',
           msg: '注册成功'
         }
         return;
@@ -288,7 +280,7 @@ module.exports = {
       // 否则失败
       ctx.body = {
         success: false,
-        code: '500',
+        data: '',
         msg: '未知错误，注册失败'
       }
     } catch (error) {
@@ -309,6 +301,41 @@ module.exports = {
         data: user
       },
       msg: '成功'
+    }
+
+  },
+
+  UpdPasswordById: async ctx => {
+    let {id, password, newPassword} = ctx.request.body;
+
+    let user = await userDao.getUserById(id, password)
+    console.log(user)
+    if (user.length === 1) {
+
+      let registerResult = await userDao.updUserById(id, newPassword)
+
+      if (registerResult.affectedRows === 1) {
+        ctx.body = {
+          success: true,
+          data: '',
+          msg: '修改成功'
+        }
+        return;
+      }
+      // 否则失败
+      ctx.body = {
+        success: false,
+        data: '',
+        msg: '未知错误，注册失败'
+      }
+
+
+    } else {
+      ctx.body = {
+        success: false,
+        data: '',
+        msg: '密码错误'
+      }
     }
 
   },

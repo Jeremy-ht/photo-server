@@ -13,5 +13,6 @@ userRouter
     .post('/user/login', userController.Login2)
     .post('/user/register', userController.Register2)
     .post('/user/getUsers', userController.GetUsers)
+    .post('/user/updPasswordById', userController.UpdPasswordById)
 
 module.exports = userRouter;

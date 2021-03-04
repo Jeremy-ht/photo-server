@@ -11,6 +11,6 @@ const resourcesController = require('../../controllers/resourcesController')
 let resourcesRouter = new Router();
 
 resourcesRouter
-  .post('/resources/carousel', resourcesController.Carousel)
+  .post('/upload/image', resourcesController.Carousel)
 
 module.exports = resourcesRouter;

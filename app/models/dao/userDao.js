@@ -33,6 +33,18 @@ module.exports = {
     const sql = 'select * from user order by id desc limit ' + pagenum + "," + pagesize + ";";
     return await db.query(sql, []);
   },
+
+
+  getUserById: async (id, password) => {
+    const sql = 'select * from user where id = ? and pwd = ?;';
+    return await db.query(sql, [id, password]);
+  },
+  updUserById: async (id, password) => {
+    const sql = 'update user set  pwd = ?  where id = ? ;';
+    return await db.query(sql, [password, id]);
+  },
+
+
   Getcount: async () => {
     const sql = `SELECT count(1) count from user;`;
     return await db.query(sql, []);

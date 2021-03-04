@@ -32,13 +32,15 @@ module.exports = {
     },
 
     getSearchList: async (pagenum, pagesize,searchText) => {
+
+        var name = "%" + searchText + "%";
         const sql = `SELECT f.* FROM photo f WHERE
-                    (f.NAME LIKE concat('%',?,'%') ||
-                    f.price LIKE concat('%',?,'%') ||
-                    f.content LIKE concat( '%', ?,'%')
+                    (f.NAME LIKE ? OR 
+                    f.price LIKE ? OR 
+                    f.content LIKE ?
                     ) ORDER BY f.id DESC;`;
 
-        return await db.query(sql, [searchText]);
+        return await db.query(sql, [name, name, name]);
     },
 
     getCategoryList: async (pagenum, pagesize) => {

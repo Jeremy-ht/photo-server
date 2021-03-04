@@ -33,6 +33,7 @@ module.exports = {
         select 
              o.*,
              p.name name,
+             p.icon icon,
              c.categoryname categoryname
         from orders o
         LEFT JOIN photo p on p.id = o.photoid
@@ -47,6 +48,7 @@ module.exports = {
          select 
              o.*,
              p.name name,
+             p.icon icon,
              c.categoryname categoryname
         from orders o
         LEFT JOIN photo p on p.id = o.photoid

@@ -68,4 +68,47 @@ module.exports = {
         let sql = 'select count(1) count from orders where userid = ?;';
         return await db.query(sql, [userid]);
     },
+
+    GetOrderByidNoPay: async (userid) => {
+        let sql = 'select count(1) count from orders where userid = ? and type = 1;';
+        return await db.query(sql, [userid]);
+    },
+
+    GetOrderChart: async () => {
+        let sql =
+            `
+                 SELECT
+                    t.monthNo AS name,
+                    COUNT( 1 ) AS value
+                FROM
+                    (
+                    SELECT
+                        MONTH ( a.creatime ) AS monthNo,
+                        YEAR ( a.creatime ) AS myYear,
+                        a.id AS id
+                    FROM
+                        orders a
+                    ) AS t
+                WHERE
+                    t.myYear = '2021'
+                GROUP BY
+                    t.monthNo;
+            `;
+        return await db.query(sql,[]);
+    },
+
+    GetOrderChart2: async () => {
+        let sql =
+            `
+                SELECT
+                    concat(c.categoryname, '店') NAME,
+                    sum( f.price ) VALUE
+                FROM
+                    orders f
+                LEFT JOIN category c ON f.addressid = c.id 
+                WHERE SUBSTRING_INDEX( f.creatime, '-', 1 ) = '2021' 
+                GROUP BY f.addressid
+            `;
+        return await db.query(sql,[]);
+    },
 }

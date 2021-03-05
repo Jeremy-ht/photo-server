@@ -85,5 +85,73 @@ module.exports = {
     },
 
 
+    // 根据userid获取未支付订单数量
+    GetOrderByidNoPay: async ctx => {
+        let {userid} = ctx.request.body;
+        const count = await orderDao.GetOrderByidNoPay(userid);
+
+        ctx.body = {
+            success: true,
+            data: {
+                data: count[0].count
+            },
+            msg: '成功'
+        }
+
+    },
+
+    GetOrderChart: async ctx => {
+
+        const order = await orderDao.GetOrderChart();
+
+        let arr = []
+
+        console.log(order)
+        for (let i = 1; i < 13; i++) {
+            let obj = {'name': 0, 'value': 0}
+
+            let temp = false
+            order.forEach(item => {
+                if (i == item.name) {
+                    obj.name = item.name
+                    obj.value = item.value
+                    temp = true
+                }
+            })
+
+            if (!temp) {
+                obj.name = i
+                obj.value = 0
+            }
+
+            arr.push(obj)
+        }
+
+
+        console.log(arr)
+
+        ctx.body = {
+            success: true,
+            data: {
+                data: arr
+            },
+            msg: '成功'
+        }
+
+    },
+    GetOrderChart2: async ctx => {
+
+        const count = await orderDao.GetOrderChart2();
+
+        ctx.body = {
+            success: true,
+            data: {
+                data: count
+            },
+            msg: '成功'
+        }
+
+    },
+
 
 }

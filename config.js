@@ -12,12 +12,7 @@ const path = require('path');
 //         String accessKeySecret = "T7clyfq6jSUHTCm9ysmC2Qf9Mn5Y8x";
 //         String bucketName = "zaixian-edu";
 const OSS_CONFIG = {
-  region: 'oss-cn-hangbei',
-  accessKeyId: 'LTAI4FtGxtVnUgLkq3aQubck',
-  accessKeySecret: 'T7clyfq6jSUHTCm9ysmC2Qf9Mn5Y8x',
-  bucket: 'zaixian-edu',
-  endPoint: 'oss-cn-beijing.aliyuncs.com',
-  BucketName: 'zaixian-edu',
+
 }
 
 module.exports = {

@@ -7,10 +7,7 @@
  */
 const path = require('path');
 
-//  String endpoint = "oss-cn-beijing.aliyuncs.com";
-//         String accessKeyId = "LTAI4FtGxtVnUgLkq3aQubck";
-//         String accessKeySecret = "T7clyfq6jSUHTCm9ysmC2Qf9Mn5Y8x";
-//         String bucketName = "zaixian-edu";
+
 const OSS_CONFIG = {
 
 }

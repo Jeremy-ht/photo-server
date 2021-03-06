@@ -49,11 +49,14 @@ module.exports = {
              o.*,
              p.name name,
              p.icon icon,
+             u.phone phone,
+             u.uname uname,
              c.categoryname categoryname
         from orders o
         LEFT JOIN photo p on p.id = o.photoid
         LEFT JOIN category c on c.id = o.addressid
-        order by o.id desc limit ?,?`;
+        LEFT JOIN user u on u.id = o.userid
+        order by o.id desc limit ?,?;`;
 
         return await db.query(sql, [pagenum, pagesize]);
     },
@@ -101,8 +104,8 @@ module.exports = {
         let sql =
             `
                 SELECT
-                    concat(c.categoryname, '店') NAME,
-                    sum( f.price ) VALUE
+                    concat(c.categoryname, '店') name,
+                    sum( f.price ) value
                 FROM
                     orders f
                 LEFT JOIN category c ON f.addressid = c.id 

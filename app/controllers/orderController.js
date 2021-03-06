@@ -70,8 +70,7 @@ module.exports = {
         pagenum1 = (pagenum - 1) * pagesize
         pagesize1 = pagenum * pagesize
 
-
-        const orders = await orderDao.GetOrderList();
+        const orders = await orderDao.GetOrderList(pagenum1, pagesize1);
 
         ctx.body = {
             success: true,

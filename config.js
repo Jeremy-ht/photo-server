@@ -20,8 +20,8 @@ module.exports = {
   // 数据库连接设置
   dbConfig: {
     connectionLimit: 10,
-    host: 'cn1.utools.club',
-    port: 40629,
+    host: '127.0.0.1',
+    port: 3306,
     user: 'root',
     password: 'root',
     database: 'storeDB'

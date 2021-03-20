@@ -47,7 +47,7 @@ module.exports = {
         return;
       }
     } catch (error) {
-      reject(error);
+
     }
 
     ctx.body = {
@@ -118,7 +118,7 @@ module.exports = {
           return;
         }
       } catch (error) {
-        reject(error);
+
       }
     } else {
       // 不存在则返回信息

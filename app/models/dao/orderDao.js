@@ -21,8 +21,8 @@ module.exports = {
             d.getSeconds();
         // ======= 当前时间 end =======
 
-        let sql = `insert into orders(userid, photoid, addressid, price, note, phototime, orderid, type, creatime) 
-                values(?,?,?,?,?,?,?,1,?)`;
+        let sql = `insert into orders(userid, photoid, addressid, price, note, phototime, orderid, type, creatime,state) 
+                values(?,?,?,?,?,?,?,1,?,0)`;
 
         return await db.query(sql, [userid, photoid, addressid, price, note, phototime, orderid, creatime]);
     },
@@ -109,7 +109,7 @@ module.exports = {
                 FROM
                     orders f
                 LEFT JOIN category c ON f.addressid = c.id 
-                WHERE SUBSTRING_INDEX( f.creatime, '-', 1 ) = '2021' 
+                WHERE f.type = 2 and SUBSTRING_INDEX( f.creatime, '-', 1 ) = '2021' 
                 GROUP BY f.addressid
             `;
         return await db.query(sql,[]);

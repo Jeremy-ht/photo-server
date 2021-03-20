@@ -98,7 +98,7 @@ module.exports = {
             d.getSeconds();
         // ======= 当前时间 end =======
         const sql = `insert into user values(?,?,?,1,1,
-        'http://service.szhtkj.com.cn/SzhtShop/uploads/default/avatar/userimg.png',
+        'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
         ?,null,?)`;
         return await db.query(sql, [id, userName, password, phone, creatime]);
     },

@@ -50,7 +50,7 @@ module.exports = {
         success: false, data: '', msg: '未知错误，注册失败'
       }
     } catch (error) {
-      reject(error);
+
     }
   },
 

@@ -1,9 +1,4 @@
-/*
- * @Author: hai-27
- * @Date: 2020-02-07 16:51:56
- * @LastEditors: hai-27
- * @LastEditTime: 2020-04-07 23:40:51
- */
+
 const Koa = require('koa');
 const KoaStatic = require('koa-static');
 const KoaBody = require('koa-body');

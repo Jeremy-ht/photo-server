@@ -1,17 +1,11 @@
-/*
- * @Description: 校验用户信息是否符合规则
- * @Author: hai-27
- * @Date: 2020-02-25 15:43:27
- * @LastEditors: hai-27
- * @LastEditTime: 2020-02-27 02:04:35
- */
+
 module.exports = {
   /**
    * 校验用户信息是否符合规则
    * @param {Object} ctx
    * @param {string} userName
    * @param {string} password
-   * @return: 
+   * @return:
    */
   checkUserInfo: (ctx, userName = '', password = '') => {
     // userName = userName ? userName : '';
@@ -47,8 +41,8 @@ module.exports = {
   },
   /**
    * 校验用户名是否符合规则
-   * @param {type} 
-   * @return: 
+   * @param {type}
+   * @return:
    */
   checkUserName: (ctx, userName = '') => {
     // 判断是否为空

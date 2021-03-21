@@ -1,10 +1,4 @@
-/*
- * @Description: 商品模块控制器
- * @Author: hai-27
- * @Date: 2020-02-07 16:51:56
- * @LastEditors: hai-27
- * @LastEditTime: 2020-02-27 15:41:11
- */
+
 const productDao = require('../models/dao/productDao');
 module.exports = {
   /**

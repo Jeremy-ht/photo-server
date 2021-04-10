@@ -4,7 +4,7 @@ const db = require('./db.js');
 module.exports = {
 
 
-    addPhoto: async (name, icon, content, price, time) => {
+    addPhoto: async (name, icon, content, price, time,fz,ps,jx,dp,xc,xk,fg,cj,js) => {
         // ======= 当前时间 start =======
         let d = new Date();
         let creatime = d.getFullYear().toString() + '-' +
@@ -15,7 +15,7 @@ module.exports = {
             d.getSeconds();
         // ======= 当前时间 end =======
 
-        const sql = `insert into photo(name, icon, content, price, time, creatime) values(?,?,?,?,?,?);`;
+        const sql = `insert into photo(name, icon, content, price, time, creatime,fz,ps,jx,dp,xc,xk,fg,cj,js) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
         return await db.query(sql, [name, icon, content, price, time, creatime]);
     },
 

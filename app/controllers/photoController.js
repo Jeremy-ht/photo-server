@@ -6,9 +6,9 @@ module.exports = {
   // 1、添加商品
   addPhoto: async ctx => {
 
-    let {name, icon, content, price, time} = ctx.request.body;
+    let {name, icon, content, price, time,fz,ps,jx,dp,xc,xk,fg,cj,js} = ctx.request.body;
 
-    let registerResult = await photoDao.addPhoto(name, icon, content, price, time);
+    let registerResult = await photoDao.addPhoto(name, icon, content, price, time,fz,ps,jx,dp,xc,xk,fg,cj,js);
     if (registerResult.affectedRows === 1) {
       ctx.body = {success: true, data: null, msg: '添加失败'}
       return;

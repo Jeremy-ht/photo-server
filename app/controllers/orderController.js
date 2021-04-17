@@ -1,4 +1,3 @@
-
 const orderDao = require('../models/dao/orderDao');
 const shoppingCartDao = require('../models/dao/shoppingCartDao');
 const productDao = require('../models/dao/productDao');
@@ -59,21 +58,41 @@ module.exports = {
     // 查询所有订单
     GetOrderList: async ctx => {
 
-        let {pagenum, pagesize} = ctx.request.body;
-        let count = await orderDao.Getcount();
-        pagenum1 = (pagenum - 1) * pagesize
-        pagesize1 = pagenum * pagesize
+        let {pagenum, pagesize, text} = ctx.request.body;
 
-        const orders = await orderDao.GetOrderList(pagenum1, pagesize1);
+        if (text == '' || text == undefined || text == null) {
+            let count = await orderDao.Getcount();
+            pagenum1 = (pagenum - 1) * pagesize
+            pagesize1 = pagenum * pagesize
 
-        ctx.body = {
-            success: true,
-            data: {
-                pageTotal: count[0].count,
-                data: orders
-            },
-            msg: '成功'
+            const orders = await orderDao.GetOrderList(pagenum1, pagesize1);
+
+            ctx.body = {
+                success: true,
+                data: {
+                    pageTotal: count[0].count,
+                    data: orders
+                },
+                msg: '成功'
+            }
+        }else {
+
+            let count = await orderDao.Getcount2(text);
+            pagenum1 = (pagenum - 1) * pagesize
+            pagesize1 = pagenum * pagesize
+
+            const orders = await orderDao.GetOrderList2(pagenum1, pagesize1,text);
+
+            ctx.body = {
+                success: true,
+                data: {
+                    pageTotal: count[0].count,
+                    data: orders
+                },
+                msg: '成功'
+            }
         }
+
 
     },
 

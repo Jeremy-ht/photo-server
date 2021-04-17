@@ -55,9 +55,51 @@ module.exports = {
         return await db.query(sql, [pagenum, pagesize]);
     },
 
+    GetOrderList2: async (pagenum, pagesize,text) => {
+        const sql = `
+        SELECT
+            o.*,
+            p.NAME NAME,
+            p.icon icon,
+            u.phone phone,
+            u.uname uname,
+            c.categoryname categoryname 
+        FROM
+            orders o
+            LEFT JOIN photo p ON p.id = o.photoid
+            LEFT JOIN category c ON c.id = o.addressid
+            LEFT JOIN user u ON u.id = o.userid 
+        WHERE
+            c.categoryname LIKE '%${text}%' 
+            or u.phone LIKE '%${text}%' 
+            or u.uname LIKE '%${text}%' 
+            or p.name LIKE '%${text}%' 
+        ORDER BY
+            o.id DESC 
+            LIMIT ?,?;`;
+
+        return await db.query(sql, [pagenum, pagesize]);
+    },
+
 
     Getcount: async () => {
         const sql = `select count(1) count from orders;`;
+        return await db.query(sql, []);
+    },
+    Getcount2: async (text) => {
+        const sql = `
+        SELECT
+            count(1) count
+        FROM
+            orders o
+        LEFT JOIN photo p ON p.id = o.photoid
+        LEFT JOIN category c ON c.id = o.addressid
+        LEFT JOIN user u ON u.id = o.userid 
+        WHERE
+        c.categoryname LIKE '%${text}%' 
+        or u.phone LIKE '%${text}%' 
+        or u.uname LIKE '%${text}%' 
+        or p.name LIKE '%${text}%';`;
         return await db.query(sql, []);
     },
 
